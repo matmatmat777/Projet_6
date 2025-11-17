@@ -1,0 +1,22 @@
+service: "service:EnergyConsumptionService"
+
+labels:
+  owner: "matde"
+  project: "seattle-energy-consumption"
+
+include:
+  - "service.py"
+  - "schemas.py"
+  - "save_model.py"
+  - "df_model_bento.csv"
+
+python:
+  packages:
+    - bentoml==1.4.28
+    - scikit-learn
+    - pandas
+    - numpy
+    - pydantic>=2.0
+
+models:
+  - "energy_consumption_model:latest"

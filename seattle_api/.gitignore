@@ -1,0 +1,35 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.joblib
+
+# --- Environnements ---
+.env
+.venv/
+env/
+venv/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Données volumineuses ---
+*.csv
+!df_model_bento.csv      # autorise uniquement ce fichier
+
+# --- BentoML ---
+bentoml/
+bento_bundle/
+bento_artifact/
+service_env/
+models/  # si jamais tu as un dossier models local
+quickstart/
+
+# --- Logs ---
+*.log
+
+# --- OS ---
+.DS_Store
+Thumbs.db

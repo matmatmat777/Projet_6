@@ -1,0 +1,156 @@
+🧠 FICHE DE RÉVISION — OPÉRATIONS CRUD MONGODB
+💡 Définition générale
+
+CRUD =
+➡️ Create → créer un document
+➡️ Read → lire / interroger des documents
+➡️ Update → modifier un document
+➡️ Delete → supprimer un document
+
+👉 Ces 4 opérations couvrent tout le cycle de vie des données dans MongoDB.
+
+🧱 1️⃣ CREATE — Insérer des documents
+➤ En Shell :
+db.patients.insertOne({ name: "Alice", age: 25, blood: "A+" })
+
+
+ou plusieurs :
+
+db.patients.insertMany([
+  { name: "Bob", age: 40 },
+  { name: "Clara", age: 31 }
+])
+
+➤ En Python (PyMongo) :
+patient = { "name": "Alice", "age": 25, "blood": "A+" }
+db.patients.insert_one(patient)
+
+
+👉 Mongo ajoute automatiquement un champ _id (identifiant unique BSON).
+
+🔎 2️⃣ READ — Lire / interroger des documents
+➤ En Shell :
+
+Afficher tous :
+
+db.patients.find()
+
+
+Filtrer :
+
+db.patients.find({ "blood": "A+" })
+
+
+Afficher plus lisiblement :
+
+db.patients.find({ "age": { "$gt": 30 } }).pretty()
+
+➤ En Python :
+for p in db.patients.find({"age": {"$gt": 30}}):
+    print(p)
+
+🔹 Options utiles :
+
+$gt, $lt, $eq → comparaisons
+
+$and, $or → combinaisons
+
+sort() → tri
+
+limit() → limite de résultats
+
+✏️ 3️⃣ UPDATE — Modifier un document
+➤ En Shell :
+
+Modifier un seul :
+
+db.patients.updateOne(
+  { "name": "Alice" },
+  { "$set": { "age": 26 } }
+)
+
+
+Modifier plusieurs :
+
+db.patients.updateMany(
+  { "blood": "A+" },
+  { "$set": { "risk": "low" } }
+)
+
+➤ En Python :
+db.patients.update_one(
+  { "name": "Alice" },
+  { "$set": { "age": 26 } }
+)
+
+🧠 Remarque :
+
+$set → modifie une valeur existante ou la crée
+
+$unset → supprime un champ
+
+$inc → incrémente une valeur numérique
+
+🗑️ 4️⃣ DELETE — Supprimer des documents
+➤ En Shell :
+db.patients.deleteOne({ "name": "Alice" })
+db.patients.deleteMany({ "age": { "$lt": 18 } })
+
+➤ En Python :
+db.patients.delete_one({"name": "Alice"})
+
+🔁 5️⃣ UPSERT — Update + Insert automatique
+
+Permet de mettre à jour un document s’il existe,
+ou de l’insérer sinon.
+
+➤ En Shell :
+db.patients.updateOne(
+  { "name": "David" },
+  { "$set": { "age": 30, "blood": "O-" } },
+  { upsert: true }
+)
+
+➤ En Python :
+db.patients.update_one(
+  { "name": "David" },
+  { "$set": { "age": 30, "blood": "O-" } },
+  upsert=True
+)
+
+
+✅ C’est ce que ton script app.py fait avec UpdateOne(..., upsert=True).
+
+⚙️ 6️⃣ Les index
+
+Les index accélèrent les recherches et empêchent les doublons.
+
+Créer un index unique :
+
+db.patients.createIndex({ "name": 1, "age": 1 }, { unique: true })
+
+
+Supprimer un index :
+
+db.patients.dropIndex("name_1_age_1")
+
+
+Lister les index :
+
+db.patients.getIndexes()
+
+🧩 7️⃣ Résumé rapide
+Action	Commande shell	Méthode Python	But principal
+Create	insertOne()	insert_one()	Créer un document
+Read	find()	find()	Lire un ou plusieurs documents
+Update	updateOne()	update_one()	Modifier un document
+Delete	deleteOne()	delete_one()	Supprimer un document
+Upsert	updateOne(..., upsert:true)	update_one(..., upsert=True)	Créer ou maj automatiquement
+🗣️ Phrase type pour la soutenance
+
+“MongoDB repose sur les opérations CRUD.
+On peut insérer, lire, modifier et supprimer des documents de manière très souple.
+Par exemple, avec PyMongo, j’utilise update_one(..., upsert=True) pour insérer ou mettre à jour automatiquement un patient.
+Les index me permettent ensuite d’éviter les doublons et d’accélérer les recherches.”
+
+Souhaites-tu que je te fasse maintenant la fiche suivante sur les index et la structuration des collections (souvent demandée à l’oral juste après CRUD) ?
